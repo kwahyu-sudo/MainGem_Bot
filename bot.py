@@ -2,6 +2,8 @@ import os
 from dotenv import load_dotenv
 from groq import Groq
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters
+from datetime import datetime
+from zoneinfo import ZoneInfo
 
 load_dotenv()
 TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
@@ -37,9 +39,21 @@ async def balas(update, context):
         await update.message.reply_text(jawaban) 
     except Exception as e:
         await update.message.reply_text(f'Error: {e}')
+# --- Fungsi waktu ---
+async def waktu(update, context):
+    # Mengambil waktu internet berdasarkan zona waktu Asia/Jakarta
+    zona_jkt = ZoneInfo("Asia/Jakarta")
+    waktu_sekarang = datetime.now(zona_jkt)
+    
+    # Format text sesuai selera (Hari, Tanggal Bulan Tahun Jam:Menit:Detik)
+    format_waktu = waktu_sekarang.strftime("%A, %d %B %Y - %H:%M:%S WIB")
+    
+    await update.message.reply_text(f"🕒 Waktu Saat Ini:\n{format_waktu}")
+# ---------------------------------
 
 app = ApplicationBuilder().token(TELEGRAM_TOKEN).build() 
 app.add_handler(CommandHandler('start', start)) 
 app.add_handler(CommandHandler('reset', reset)) 
+app.add_handler(CommandHandler('waktu', waktu))
 app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, balas)) 
 app.run_polling()
