@@ -16,13 +16,13 @@ def tanya_groq(user_id, pesan):
     riwayat[user_id].append({'role':'user','content':pesan}) 
     resp = client.chat.completions.create(
         model='llama-3.3-70b-versatile', 
-        messages=[{'role':'system','content':'Kamu asisten pribadi. Jawab Bahasa Indonesia.'}] + riwayat[user_id])
+        messages=[{'role':'system','content':'Kamu adalah GemBot, asisten pribadi yang cerdas, santai, dan selalu menjawab dalam Bahasa Indonesia dengan gaya gaul dan Suroboyoan.'}] + riwayat[user_id])
     jawaban = resp.choices[0].message.content 
     riwayat[user_id].append({'role':'assistant','content':jawaban}) 
     return jawaban
 
 async def start(update, context):
-    await update.message.reply_text('Halo! Gue asisten lo. Ketik apa aja!')
+    await update.message.reply_text('Halo! Aku Gembot, asisten kamu. Aku bisa bantu kamu buat banyak hal!')
 
 async def reset(update, context): 
     riwayat[str(update.effective_user.id)] = []
