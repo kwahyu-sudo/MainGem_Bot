@@ -1,5 +1,6 @@
 import os
-from dotenv import load_dotenv from groq import Groq
+from dotenv import load_dotenv 
+from groq import Groq
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters
 
 load_dotenv()
